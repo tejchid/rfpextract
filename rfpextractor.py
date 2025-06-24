@@ -2,6 +2,26 @@ import streamlit as st
 import pandas as pd
 import requests
 
+# gpt css
+st.markdown("""
+<style>
+.pulsing-success {
+    animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+</style>
+""", unsafe_allow_html=True)
+
 col1, col2 = st.columns([4, 1])
 with col1:
     st.title("RFP Analyzer")
@@ -57,7 +77,7 @@ try:
     good_fit_bids = df[df['Good Fit']]
     if len(good_fit_bids) > 0:
         st.balloons()
-        st.success(f"Found {len(good_fit_bids)} great opportunities!")
+        st.markdown(f'<div class="pulsing-success">🎉 Found {len(good_fit_bids)} great opportunities! 🎉</div>', unsafe_allow_html=True)
     st.dataframe(good_fit_bids[cols])
     
     st.subheader("🔎 Bids Matching Core Networking Keywords")
@@ -65,7 +85,7 @@ try:
     networking_bids = df[df['Networking Keywords Match?']]
     if len(networking_bids) > 0:
         st.balloons()
-        st.success(f"Found {len(networking_bids)} networking opportunities!")
+        st.markdown(f'<div class="pulsing-success">🔍 Found {len(networking_bids)} networking opportunities! 🔍</div>', unsafe_allow_html=True)
     st.dataframe(networking_bids[networking_cols])
     
 except Exception as e:
