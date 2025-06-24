@@ -2,7 +2,11 @@ import streamlit as st
 import pandas as pd
 import requests
 
-st.title("RFP Analyzer")
+col1, col2 = st.columns([4, 1])
+with col1:
+    st.title("RFP Analyzer")
+with col2:
+    st.image("ruckus_dog.png", width=80)
 
 # get data and convert to dataframe
 try:
@@ -50,11 +54,19 @@ try:
     st.dataframe(df[cols])
     
     st.subheader("✅Bids to Be Pursued")
-    st.dataframe(df[df['Good Fit']][cols])
+    good_fit_bids = df[df['Good Fit']]
+    if len(good_fit_bids) > 0:
+        st.balloons()
+        st.success(f"Found {len(good_fit_bids)} great opportunities!")
+    st.dataframe(good_fit_bids[cols])
     
     st.subheader("🔎 Bids Matching Core Networking Keywords")
     networking_cols = cols + ['Networking Keywords Match?']
-    st.dataframe(df[df['Networking Keywords Match?']][networking_cols])
+    networking_bids = df[df['Networking Keywords Match?']]
+    if len(networking_bids) > 0:
+        st.balloons()
+        st.success(f"Found {len(networking_bids)} networking opportunities!")
+    st.dataframe(networking_bids[networking_cols])
     
 except Exception as e:
     st.error(f"Error: {e}")
